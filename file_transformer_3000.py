@@ -226,7 +226,7 @@ def ls():
 def wfs():
     global server_socket
 
-    # Přijetí připojení
+    server_socket.close()
     client_socket, client_address = server_socket.accept()
     # Vytvoření vlákna pro obsluhu klienta
     client_thread = threading.Thread(target=download)
@@ -238,7 +238,7 @@ def download():
     
     try:
         # Přijetí názvu souboru (včetně přípony)
-        file_name_with_extension = server_socket.recv(1024)
+        file_name_with_extension = client_socket.recv(1024)
         if not file_name_with_extension:
             return
 
@@ -264,6 +264,7 @@ def download():
 
     except Exception as e:
         messagebox.showerror("Nastala chyba", f"Nastala chyba s připojením: {e}")
+
 
 
 def is_android():
